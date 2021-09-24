@@ -36,12 +36,21 @@ class Pawn(Piece):
 
     def get_available_moves(self, board):
         square = board.find_piece(self)
-
         if self.player == Player.WHITE:
-            squareToMoveTo = Square.at(square.row + 1, square.col)
+            if square.row == 1:
+                squareStart = Square.at(square.row + 2, square.col)
+                squareToMoveTo = Square.at(square.row + 1, square.col)
+                return [squareToMoveTo, squareStart]
+            else:
+                squareToMoveTo = Square.at(square.row + 1, square.col)
             return [squareToMoveTo]
         else:
-            squareToMoveTo = Square.at(square.row - 1, square.col)
+            if square.row == 6:
+                squareStart = Square.at(square.row - 2, square.col)
+                squareToMoveTo = Square.at(square.row -1, square.col)
+                return [squareToMoveTo, squareStart]
+            else:
+                squareToMoveTo = Square.at(square.row - 1, square.col)
             return [squareToMoveTo]
 
 
