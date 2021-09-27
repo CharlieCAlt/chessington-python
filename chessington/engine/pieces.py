@@ -36,22 +36,34 @@ class Pawn(Piece):
 
     def get_available_moves(self, board):
         square = board.find_piece(self)
+        white_move_once = Square.at(square.row + 1, square.col)
+        white_move_twice = Square.at(square.row + 2, square.col)
+        black_move_once = Square.at(square.row -1, square.col)
+        black_move_twice = Square.at(square.row - 2, square.col)
+        available_W = board.get_piece(white_move_once)
+        available_B = board.get_piece(black_move_once)
+
+        print(available_W)
+
         if self.player == Player.WHITE:
-            if square.row == 1:
-                squareStart = Square.at(square.row + 2, square.col)
-                squareToMoveTo = Square.at(square.row + 1, square.col)
-                return [squareToMoveTo, squareStart]
+            if square.row == 1 and available_W == None:
+                return [white_move_once, white_move_twice]
+            elif available_W == None:
+                return [white_move_once]
             else:
-                squareToMoveTo = Square.at(square.row + 1, square.col)
-            return [squareToMoveTo]
+                return []
         else:
-            if square.row == 6:
-                squareStart = Square.at(square.row - 2, square.col)
-                squareToMoveTo = Square.at(square.row -1, square.col)
-                return [squareToMoveTo, squareStart]
+            if square.row == 6 and available_B == None:
+                return [black_move_once, black_move_twice]
+            elif available_B == None:
+                return [black_move_once]
             else:
-                squareToMoveTo = Square.at(square.row - 1, square.col)
-            return [squareToMoveTo]
+                return []
+
+    #board.get_piece() This will return none or piece when coordinates are input
+    # available = board.get_piece(squareToMoveTo)
+    # print(available)
+    # if available != none, then there is a piece in the way and cannot move there.
 
 
 class Knight(Piece):
