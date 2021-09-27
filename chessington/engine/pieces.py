@@ -3,7 +3,6 @@ Definitions of each of the different chess pieces.
 """
 
 from abc import ABC, abstractmethod
-
 from chessington.engine.data import Player, Square
 
 class Piece(ABC):
@@ -36,29 +35,56 @@ class Pawn(Piece):
 
     def get_available_moves(self, board):
         square = board.find_piece(self)
-        white_move_once = Square.at(square.row + 1, square.col)
-        white_move_twice = Square.at(square.row + 2, square.col)
-        black_move_once = Square.at(square.row -1, square.col)
-        black_move_twice = Square.at(square.row - 2, square.col)
-        available_W = board.get_piece(white_move_once)
-        available_B = board.get_piece(black_move_once)
-
-        print(available_W)
 
         if self.player == Player.WHITE:
-            if square.row == 1 and available_W == None:
-                return [white_move_once, white_move_twice]
-            elif available_W == None:
-                return [white_move_once]
-            else:
-                return []
+            change = 1
+            start_row = 1
+            row_limit = 7
         else:
-            if square.row == 6 and available_B == None:
-                return [black_move_once, black_move_twice]
-            elif available_B == None:
-                return [black_move_once]
-            else:
-                return []
+            change = -1
+            start_row = 6
+            row_limit = 0
+
+        if square.row == row_limit:
+            return []
+        else:
+            pass
+
+        move_once = Square.at(square.row + (1 * change), square.col)
+        move_twice = Square.at(square.row +(2 * change), square.col)
+        available = board.get_piece(move_once)
+        available_two = board.get_piece(move_twice)
+        print(available)
+
+        if square.row == start_row and available == None and available_two == None:
+          return [move_once, move_twice]
+        elif square.row == start_row and available == None:
+            return [move_once]
+        elif available == None:
+            return [move_once]
+        else:
+            return []
+
+        # white_move_once = Square.at(square.row + 1, square.col)
+        # white_move_twice = Square.at(square.row + 2, square.col)
+        # black_move_once = Square.at(square.row -1, square.col)
+        # black_move_twice = Square.at(square.row - 2, square.col)
+
+        # if self.player == Player.WHITE:
+        #     # if loop where pawn must be at start with nothing 1 or 2 squares infront
+        #     if square.row == 1 and available_W == None:
+        #         return [white_move_once, white_move_twice]
+        #     elif available_W == None:
+        #         return [white_move_once]
+        #     else:
+        #         return []
+        # else:
+        #     if square.row == 6 and available_B == None:
+        #         return [black_move_once, black_move_twice]
+        #     elif available_B == None:
+        #         return [black_move_once]
+        #     else:
+        #         return []
 
     #board.get_piece() This will return none or piece when coordinates are input
     # available = board.get_piece(squareToMoveTo)
